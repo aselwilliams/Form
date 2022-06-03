@@ -5,6 +5,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [user, setUser]=useState({firstName:'',lastName:'',email:'', phone:'',password:'',confirmPwd:'', registerCode:'', state: '',avatar:'' })
+  const [usersGroup, setUsersGroup] = useState([]);
+
+  const handleChange=(e)=>{
+    const name = e.target.name;
+    const value = e.target.value;
+    console.log(name, value)
+    setUser({...user, [name]: value})
+  }
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    if(user.firstName && user.lastName && user.email && user.phone && user.password && user.confirmPwd && user.registerCode && user.state){
+     const newUser = {...user, id:new Date().getTime().toString()};
+     setUsersGroup([...usersGroup, newUser]);
+     setUser({firstName:'',lastName:'',email:'', phone:'',password:'',confirmPwd:'', registerCode:'', state: '',avatar:''}) 
+    }
+
+  }
   return (
     <div className="container">
 <header>
@@ -13,15 +31,16 @@ function App() {
 </header>
 <main>
   <h2>CREATE AN ACCOUNT</h2>
+  <Form onSubmit={handleSubmit}>
   <Row className="g-2 mb-4">
   <Col md className='m-3'>
     <FloatingLabel controlId="floatingInputGrid" label="Name *">
-      <Form.Control type="text" placeholder="Name *" id='firstName' name='firstName' value={user.firstName}/>
+      <Form.Control type="text" placeholder="Name *" id='firstName' name='firstName' value={user.firstName} onChange={handleChange}/>
     </FloatingLabel>
   </Col>
   <Col md className='m-3'>
     <FloatingLabel controlId="floatingInputGrid" label="Last Name *">
-      <Form.Control type="text" placeholder="Last Name *" id='lastName' name='lastName' value={user.lastName} />
+      <Form.Control type="text" placeholder="Last Name *" id='lastName' name='lastName' value={user.lastName} onChange={handleChange}/>
     </FloatingLabel>
   </Col>
   </Row>
@@ -29,12 +48,12 @@ function App() {
   <Row className="g-2 mb-4">
   <Col md className='m-3'>
     <FloatingLabel controlId="floatingInputGrid" label="Email *">
-      <Form.Control type="email" placeholder="Email *"  id='email' name='email' value={user.email} />
+      <Form.Control type="email" placeholder="Email *"  id='email' name='email' value={user.email} onChange={handleChange}/>
     </FloatingLabel>
   </Col>
   <Col md className='m-3'>
     <FloatingLabel controlId="floatingInputGrid" label="Phone *">
-      <Form.Control type="tel" placeholder="Phone *" id='phone' name='phone' value={user.phone}/>
+      <Form.Control type="tel" placeholder="Phone *" id='phone' name='phone' value={user.phone} onChange={handleChange}/>
     </FloatingLabel>
   </Col>
   </Row>
@@ -42,12 +61,12 @@ function App() {
   <Row className="g-2 mb-4">
   <Col md className='m-3'>
     <FloatingLabel controlId="floatingInputGrid" label="Password *">
-      <Form.Control type="password" placeholder="Password *" id='password' name='password' value={user.password}/>
+      <Form.Control type="password" placeholder="Password *" id='password' name='password' value={user.password} onChange={handleChange}/>
     </FloatingLabel>
   </Col>
   <Col md className='m-3'>
     <FloatingLabel controlId="floatingInputGrid" label="Confirm Password *">
-      <Form.Control type="password" placeholder="Confirm Password *" id='confirmPwd' name='confirmPwd' value={user.confirmPwd} />
+      <Form.Control type="password" placeholder="Confirm Password *" id='confirmPwd' name='confirmPwd' value={user.confirmPwd} onChange={handleChange}/>
     </FloatingLabel>
   </Col>
   </Row>
@@ -55,12 +74,12 @@ function App() {
   <Row className="g-2 mb-4">
   <Col md className='m-3'>
     <FloatingLabel controlId="floatingInputGrid" label="Register Code *">
-      <Form.Control type="text" placeholder="Register Code *" id='registerCode' name='registerCode' value={user.registerCode} />
+      <Form.Control type="text" placeholder="Register Code *" id='registerCode' name='registerCode' value={user.registerCode} onChange={handleChange}/>
     </FloatingLabel>
   </Col>
   <Col md className='m-3'>
     <FloatingLabel controlId="floatingSelectGrid" label="Works with selects">
-      <Form.Select aria-label="Floating label select example" id='state' name='state' value={user.state}>
+      <Form.Select aria-label="Floating label select example" id='state' name='state' value={user.state} onChange={handleChange}>
         <option>State *</option>
         <option value="1">One</option>
         <option value="2">Two</option>
@@ -80,6 +99,7 @@ function App() {
 <Row className='g-2 mb-3 m-2'>
   <Button className='btn btn-secondary'>Register</Button>
   </Row>
+  </Form>
   <footer>
     <p>Already have an account?</p>
     <a href='#'>Login</a>
